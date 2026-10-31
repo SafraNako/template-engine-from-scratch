@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "template-engine-from-scratch"
+version = "0.1.0"
+description = "A template engine with the syntax of Jinja2 (variables, filters, tests, conditions, loops, macros, includes, inheritance) written from scratch in pure Python, checked against Jinja2 itself"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "SafraNako" }]
+keywords = ["template", "template-engine", "jinja2", "html", "text", "education"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup :: HTML",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/SafraNako/template-engine-from-scratch"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "jinja2>=3.1,<3.2",
+]
+
+[project.scripts]
+sablon = "kendi_sablon.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "tests"]
+filterwarnings = ["ignore::SyntaxWarning"]

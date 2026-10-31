@@ -1,0 +1,29 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    # Jinja2 is the oracle of the comparison tests: it has to be installed, and its version is pinned because its small quirks are what is compared
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install the package and the development dependencies
+        run: pip install -e ".[dev]"
+      - name: Show the versions that are compared
+        run: python -c "import jinja2, markupsafe, importlib.metadata as m; print('jinja2', m.version('jinja2'), 'markupsafe', m.version('markupsafe'))"
+      - name: Run the tests (800 random templates per generator)
+        run: KENDI_FUZZ=800 pytest -v
+      - name: Benchmark (smoke run)
+        run: python benchmarks/bench.py 300
